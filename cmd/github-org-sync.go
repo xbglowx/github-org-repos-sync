@@ -155,8 +155,11 @@ func main(args []string) {
 	repos := gh.fetchRepos(ctx)
 
 	for _, repo := range repos {
-		if *repo.Archived && !includeArchived {
-			fmt.Printf("Not including %s since it is archived and you asked to not included archived\n", repo.GetName())
+		if *repo.Archived && skipArchived {
+			fmt.Printf("Not including %s since you asked to skip any archived repos\n", repo.GetName())
+			continue
+		} else if !repo.Permissions["pull"] {
+			fmt.Printf("Not including %s since you don't have pull permission\n", repo.GetName())
 			continue
 		} else {
 			gh.wg.Add(1)
