@@ -1,4 +1,4 @@
-module github.com/xbglowx/github-org-sync
+module github.com/xbglowx/github-org-repos-sync
 
 go 1.16
 

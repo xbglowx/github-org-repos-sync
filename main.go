@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/xbglowx/github-org-sync/cmd"
+import "github.com/xbglowx/github-org-repos-sync/cmd"
 
 func main() {
 	cmd.Execute()

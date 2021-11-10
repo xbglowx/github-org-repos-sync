@@ -4,7 +4,7 @@ Sync Github Org's repos
 ## Build
 1. `git clone git@github.com:xbglowx/github-org-repos-sync.git`
 1. `go get -d .`
-1. `go build -o github-org-repos-sync main.go`
+1. `go build .`
 
 ## Auth
 1. Authenticated access to the GitHub API via personal access token with scope **repo**

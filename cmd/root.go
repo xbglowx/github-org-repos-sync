@@ -51,7 +51,7 @@ func checkRequirements() error {
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "github-org-sync <github-org-name>",
+	Use:   "github-org-repos-sync <github-org-name>",
 	Short: "Sync github org repos",
 	Long:  "Sync github org repos.",
 
@@ -62,7 +62,7 @@ var rootCmd = &cobra.Command{
 		main(args)
 	},
 	Args:    cobra.ExactArgs(1),
-	Example: "github-org-sync floorpunch",
+	Example: "github-org-repos-sync floorpunch",
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
