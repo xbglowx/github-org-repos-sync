@@ -51,7 +51,7 @@ func checkRequirements() error {
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "github-org-sync",
+	Use:   "github-org-sync <github-org-name>",
 	Short: "Sync github org repos",
 	Long:  "Sync github org repos.",
 
