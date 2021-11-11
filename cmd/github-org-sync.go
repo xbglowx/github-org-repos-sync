@@ -85,7 +85,7 @@ func (gh *GhOrgSync) cloneRepo(sem chan struct{}, repo *github.Repository) {
 	fmt.Printf("Cloning repo %s to %s%s\n", repo.GetName(), gh.destPath, repo.GetName())
 	err := cmd.Run()
 	if err != nil {
-		fmt.Printf("***ERROR***: Repo %s failed to clone: %v\n", repo.GetName(), err)
+		fmt.Printf("ERROR: Repo %s failed to clone: %v\n", repo.GetName(), err)
 	}
 }
 
@@ -114,12 +114,12 @@ func (gh *GhOrgSync) updateLocalRepo(sem chan struct{}, repo *github.Repository)
 
 	repoPath := fmt.Sprintf("%s%s", gh.destPath, repo.GetName())
 	if gitDirtyBranch(fmt.Sprintf("%s%s", gh.destPath, repo.GetName())) {
-		fmt.Printf("%s is dirty, so stashing first", repoPath)
+		fmt.Printf("INFO: %s is dirty, so stashing first\n", repoPath)
 		gitStashCmd := strings.Fields(fmt.Sprintf("git -C %s stash push", repoPath))
 		cmd := exec.Command(gitStashCmd[0], gitStashCmd[1:]...)
 		err := cmd.Run()
 		if err != nil {
-			fmt.Printf("***ERROR***: Repo %s is dirty but failed to stash: %s\n", repo.GetName(), err)
+			fmt.Printf("ERROR: Repo %s is dirty but failed to stash: %s\n", repo.GetName(), err)
 		}
 	}
 
@@ -128,7 +128,7 @@ func (gh *GhOrgSync) updateLocalRepo(sem chan struct{}, repo *github.Repository)
 	cmd := exec.Command(gitCheckoutCmd[0], gitCheckoutCmd[1:]...)
 	err := cmd.Run()
 	if err != nil {
-		fmt.Printf("***ERROR***: Failed to checkout default branch %s for repo %s: %s\n", *defaultBranch, repo.GetName(), err)
+		fmt.Printf("ERROR: Failed to checkout default branch %s for repo %s: %s\n", *defaultBranch, repo.GetName(), err)
 	}
 
 	gitUpdateCmd := strings.Fields(fmt.Sprintf("git -C %s pull --rebase", repoPath))
@@ -136,7 +136,7 @@ func (gh *GhOrgSync) updateLocalRepo(sem chan struct{}, repo *github.Repository)
 	fmt.Printf("Updating repo %s%s\n", gh.destPath, repo.GetName())
 	err = cmd.Run()
 	if err != nil {
-		fmt.Printf("***ERROR***: Repo %s failed to update: %v\n", repo.GetName(), err)
+		fmt.Printf("ERROR: Repo %s failed to update: %v\n", repo.GetName(), err)
 	}
 }
 
@@ -156,10 +156,10 @@ func main(args []string) {
 
 	for _, repo := range repos {
 		if *repo.Archived && skipArchived {
-			fmt.Printf("Not including %s since you asked to skip any archived repos\n", repo.GetName())
+			fmt.Printf("INFO: Not including %s since you asked to skip any archived repos\n", repo.GetName())
 			continue
 		} else if !repo.Permissions["pull"] {
-			fmt.Printf("Not including %s since you don't have pull permission\n", repo.GetName())
+			fmt.Printf("WARNING: Not including %s since you don't have pull permission\n", repo.GetName())
 			continue
 		} else {
 			gh.wg.Add(1)
