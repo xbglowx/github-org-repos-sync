@@ -120,6 +120,7 @@ func (gh *GhOrgSync) updateLocalRepo(sem chan struct{}, repo *github.Repository)
 		err := cmd.Run()
 		if err != nil {
 			fmt.Printf("ERROR: Repo %s is dirty but failed to stash: %s\n", repo.GetName(), err)
+			return
 		}
 	}
 
@@ -129,6 +130,7 @@ func (gh *GhOrgSync) updateLocalRepo(sem chan struct{}, repo *github.Repository)
 	err := cmd.Run()
 	if err != nil {
 		fmt.Printf("ERROR: Failed to checkout default branch %s for repo %s: %s\n", *defaultBranch, repo.GetName(), err)
+		return
 	}
 
 	gitUpdateCmd := strings.Fields(fmt.Sprintf("git -C %s pull --rebase", repoPath))
