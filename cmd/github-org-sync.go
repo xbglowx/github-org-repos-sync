@@ -163,6 +163,10 @@ func main(args []string) {
 		} else if !repo.Permissions["pull"] {
 			fmt.Printf("WARNING: Not including %s since you don't have pull permission\n", repo.GetName())
 			continue
+		} else if includeRepoString != "" && !strings.Contains(*repo.Name, includeRepoString) {
+			continue
+		} else if excludeRepoString != "" && strings.Contains(*repo.Name, excludeRepoString) {
+			continue
 		} else {
 			gh.wg.Add(1)
 			if repoExistLocal(repo) {

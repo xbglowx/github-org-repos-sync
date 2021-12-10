@@ -25,11 +25,13 @@ import (
 )
 
 var destPath string
-var skipArchived bool
+var excludeRepoString string
+var includeRepoString string
 var parallelism int
 var requiredEnvs = []string{
 	"GITHUB_TOKEN",
 }
+var skipArchived bool
 
 func checkRequirements() error {
 	for _, env := range requiredEnvs {
@@ -43,6 +45,11 @@ func checkRequirements() error {
 	_, err := exec.LookPath("git")
 	if err != nil {
 		errMsg := fmt.Sprintf("Could not find command git. Please install it: %s\n", err)
+		return errors.New(errMsg)
+	}
+
+	if includeRepoString != "" && excludeRepoString != "" {
+		errMsg := fmt.Sprint("You can't use both --exclude-repos and --include-repos")
 		return errors.New(errMsg)
 	}
 
@@ -73,6 +80,8 @@ func Execute() {
 
 func init() {
 	rootCmd.Flags().BoolVar(&skipArchived, "skip-archived", false, "Skip archived repos?")
+	rootCmd.Flags().StringVar(&excludeRepoString, "exclude-repos", "", "Exclude repos that contain string")
 	rootCmd.Flags().StringVarP(&destPath, "destination-path", "d", ".", "Destionation path for repos")
+	rootCmd.Flags().StringVar(&includeRepoString, "include-repos", "", "Include only repos that contain string")
 	rootCmd.Flags().IntVarP(&parallelism, "parallelism", "p", 1, "Number of parallel git operations")
 }
