@@ -7,6 +7,6 @@ require (
 	github.com/google/go-github/v39 v39.2.0
 	github.com/google/go-github/v53 v53.1.0
 	github.com/spf13/cobra v1.7.0
-	golang.org/x/oauth2 v0.8.0
+	golang.org/x/oauth2 v0.9.0
 	google.golang.org/protobuf v1.28.1 // indirect
 )
