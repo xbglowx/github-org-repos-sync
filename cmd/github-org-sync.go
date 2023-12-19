@@ -16,7 +16,7 @@ type GhOrgSync struct {
 	client   *github.Client
 	destPath string
 	org      string
-	wg       sync.WaitGroup
+	wg       *sync.WaitGroup
 }
 
 func ghClient(ctx context.Context) *github.Client {
@@ -150,7 +150,7 @@ func main(args []string) {
 		client:   ghClient(ctx),
 		destPath: fixDestPath(destPath),
 		org:      args[0],
-		wg:       wg,
+		wg:       &wg,
 	}
 
 	sem := make(chan struct{}, parallelism)
