@@ -15,6 +15,7 @@ jobs:
 
     steps:
       - checkout
-      - run: go get -u golang.org/x/lint/golint && golint -set_exit_status
       - run: go get -v -t -d ./...
+      - run: golangci-lint run
+      - run: go build .
       #- run: go test -v ./...
