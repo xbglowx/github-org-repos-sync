@@ -1,6 +1,6 @@
 module github.com/xbglowx/github-org-repos-sync
 
-go 1.21.6
+go 1.21
 
 require (
 	github.com/google/go-github/v39 v39.2.0
