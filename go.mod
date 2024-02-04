@@ -3,14 +3,14 @@ module github.com/xbglowx/github-org-repos-sync
 go 1.21
 
 require (
-	github.com/google/go-github/v58 v58.0.0
-	github.com/google/go-github/v58 v58.0.0
+	github.com/google/go-github/v39 v39.2.0
 	github.com/spf13/cobra v1.8.0
 	golang.org/x/oauth2 v0.16.0
 )
 
 require (
 	github.com/golang/protobuf v1.5.3 // indirect
+	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
