@@ -1,4 +1,4 @@
-# github-org-repos-sync [![CircleCI](https://circleci.com/gh/xbglowx/github-org-repos-sync.svg?style=svg)](https://circleci.com/gh/xbglowx/github-org-repos-sync)
+# github-org-repos-sync [![Build and Test](https://github.com/xbglowx/github-org-repos-sync/actions/workflows/build-test.yaml/badge.svg)](https://github.com/xbglowx/github-org-repos-sync/actions/workflows/build-test.yaml) [![golangci-lint](https://github.com/xbglowx/github-org-repos-sync/actions/workflows/golangci-lint.yml/badge.svg)](https://github.com/xbglowx/github-org-repos-sync/actions/workflows/golangci-lint.yml) [![CodeQL](https://github.com/xbglowx/github-org-repos-sync/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/xbglowx/github-org-repos-sync/actions/workflows/codeql-analysis.yml)
 Sync GitHub organization repos 
 
 ## Build
