@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/google/go-github/v39/github"
+	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
 )
 
@@ -160,7 +160,7 @@ func main(args []string) {
 		if *repo.Archived && skipArchived {
 			fmt.Printf("INFO: Not including %s since you asked to skip any archived repos\n", repo.GetName())
 			continue
-		} else if !repo.Permissions["pull"] {
+		} else if !(*repo.Permissions)["pull"] {
 			fmt.Printf("WARNING: Not including %s since you don't have pull permission\n", repo.GetName())
 			continue
 		} else if includeRepoString != "" && !strings.Contains(*repo.Name, includeRepoString) {
