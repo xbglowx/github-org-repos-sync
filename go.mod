@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/spf13/cobra v1.8.1
-	golang.org/x/oauth2 v0.25.0
+	golang.org/x/oauth2 v0.26.0
 )
 
 require (
