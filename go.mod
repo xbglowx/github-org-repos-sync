@@ -3,7 +3,7 @@ module github.com/xbglowx/github-org-repos-sync
 go 1.21
 
 require (
-	github.com/spf13/cobra v1.9.0
+	github.com/spf13/cobra v1.9.1
 	golang.org/x/oauth2 v0.26.0
 )
 
