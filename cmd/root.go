@@ -49,7 +49,7 @@ func checkRequirements() error {
 	}
 
 	if includeRepoString != "" && excludeRepoString != "" {
-		return errors.New("You can't use both --exclude-repos and --include-repos")
+		return errors.New("you can't use both --exclude-repos and --include-repos")
 	}
 
 	return nil
