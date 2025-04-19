@@ -22,9 +22,6 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v4
 
-    - name: Get dependencies
-      run: go get -v -d ./...
-
     - name: Build
       run: GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -v -o vault-kv-search-${{ matrix.goos }}-${{ matrix.goarch }}
 
