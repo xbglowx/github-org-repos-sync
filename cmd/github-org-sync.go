@@ -63,8 +63,8 @@ func (gh *GhOrgSync) fetchRepos(ctx context.Context) []*github.Repository {
 	return repos
 }
 
-func repoExistLocal(repo *github.Repository) bool {
-	repoGitDir := fmt.Sprintf("%s/%s/.git", destPath, repo.GetName())
+func repoExistLocal(destPath string, repo *github.Repository) bool {
+	repoGitDir := fmt.Sprintf("%s%s/.git", destPath, repo.GetName())
 	if _, err := os.Stat(repoGitDir); err != nil {
 		return false
 	}
@@ -104,6 +104,13 @@ func gitDirtyBranch(repoDir string) bool {
 	return err != nil
 }
 
+func gitRepoEmpty(repoDir string) bool {
+	gitRevParseCmd := strings.Fields(fmt.Sprintf("git -C %s rev-parse --verify HEAD", repoDir))
+	cmd := exec.Command(gitRevParseCmd[0], gitRevParseCmd[1:]...)
+	err := cmd.Run()
+	return err != nil
+}
+
 func (gh *GhOrgSync) updateLocalRepo(sem chan struct{}, repo *github.Repository) {
 	defer gh.wg.Done()
 
@@ -113,6 +120,10 @@ func (gh *GhOrgSync) updateLocalRepo(sem chan struct{}, repo *github.Repository)
 	}()
 
 	repoPath := fmt.Sprintf("%s%s", gh.destPath, repo.GetName())
+	if gitRepoEmpty(repoPath) {
+		fmt.Printf("INFO: %s is empty, skipping update\n", repoPath)
+		return
+	}
 	if gitDirtyBranch(fmt.Sprintf("%s%s", gh.destPath, repo.GetName())) {
 		fmt.Printf("INFO: %s is dirty, so stashing first\n", repoPath)
 		gitStashCmd := strings.Fields(fmt.Sprintf("git -C %s stash push", repoPath))
@@ -124,10 +135,22 @@ func (gh *GhOrgSync) updateLocalRepo(sem chan struct{}, repo *github.Repository)
 		}
 	}
 
+	gitFetchCmd := strings.Fields(fmt.Sprintf("git -C %s fetch origin", repoPath))
+	cmd := exec.Command(gitFetchCmd[0], gitFetchCmd[1:]...)
+	err := cmd.Run()
+	if err != nil {
+		fmt.Printf("ERROR: Failed to fetch origin for repo %s: %s\n", repo.GetName(), err)
+		return
+	}
+
+	if repo.DefaultBranch == nil {
+		fmt.Printf("INFO: Repo %s has no default branch, skipping update\n", repo.GetName())
+		return
+	}
 	defaultBranch := repo.DefaultBranch
 	gitCheckoutCmd := strings.Fields(fmt.Sprintf("git -C %s checkout %s", repoPath, *defaultBranch))
-	cmd := exec.Command(gitCheckoutCmd[0], gitCheckoutCmd[1:]...)
-	err := cmd.Run()
+	cmd = exec.Command(gitCheckoutCmd[0], gitCheckoutCmd[1:]...)
+	err = cmd.Run()
 	if err != nil {
 		fmt.Printf("ERROR: Failed to checkout default branch %s for repo %s: %s\n", *defaultBranch, repo.GetName(), err)
 		return
@@ -169,7 +192,7 @@ func main(args []string) {
 			continue
 		} else {
 			gh.wg.Add(1)
-			if repoExistLocal(repo) {
+			if repoExistLocal(gh.destPath, repo) {
 				go gh.updateLocalRepo(sem, repo)
 			} else {
 				go gh.cloneRepo(sem, repo)
