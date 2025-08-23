@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.8](https://github.com/xbglowx/github-org-repos-sync/compare/v0.0.7...v0.0.8) (2025-08-23)
+
+
+### Bug Fixes
+
+* run fetch before checkout ([cc865a2](https://github.com/xbglowx/github-org-repos-sync/commit/cc865a2adf3036483b04d71dd909e2bd9c84f447))
+
 ## [0.0.7](https://github.com/xbglowx/github-org-repos-sync/compare/v0.0.6...v0.0.7) (2025-08-23)
 
 
