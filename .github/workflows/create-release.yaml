@@ -37,7 +37,7 @@ jobs:
         go-version-file: 'go.mod'
 
     - name: Check out code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Build
       run: GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -v -o github-org-repos-sync-${{ matrix.goos }}-${{ matrix.goarch }}
