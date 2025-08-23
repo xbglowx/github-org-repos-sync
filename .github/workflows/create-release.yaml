@@ -1,14 +1,79 @@
-name: Release Please
+name: Release
 
 on:
   push:
     branches:
       - main
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
       - uses: googleapis/release-please-action@v4
+        id: release
         with:
-          token: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  build-and-publish:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux, darwin, windows]
+        goarch: [arm64, amd64]
+    steps:
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: 'go.mod'
+
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Build
+      run: GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -v -o github-org-repos-sync-${{ matrix.goos }}-${{ matrix.goarch }}
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: github-org-repos-sync-${{ matrix.goos }}-${{ matrix.goarch }}
+        path: ./github-org-repos-sync-${{ matrix.goos }}-${{ matrix.goarch }}
+
+  release-assets:
+    needs: [release-please, build-and-publish]
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts
+
+    - name: Prep binaries
+      run: |
+        mkdir tmp
+        find artifacts -type f -name "github-org-repos-sync-*" -exec mv {} tmp/ \;
+
+    - name: Generate SHA256 Checksum
+      run: |
+        cd tmp
+        shasum -a 256 github-org-repos-sync-* > sha256sums.txt
+
+    - name: Upload artifacts to existing release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ needs.release-please.outputs.tag_name }}
+        files: |
+          ./tmp/sha256sums.txt
+          ./tmp/github-org-repos-sync-*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
