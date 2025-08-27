@@ -24,6 +24,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// Version can be set at build time using ldflags:
+// go build -ldflags "-X github.com/xbglowx/github-org-repos-sync/cmd.Version=1.0.0"
+var Version = "dev"
+
 var destPath string
 var excludeRepoString string
 var includeRepoString string
@@ -62,13 +66,34 @@ var rootCmd = &cobra.Command{
 	Long:  "Sync github org repos.",
 
 	PreRunE: func(cmd *cobra.Command, args []string) error {
+		// Check if version flag is set
+		if versionFlag, _ := cmd.Flags().GetBool("version"); versionFlag {
+			fmt.Printf("github-org-repos-sync version %s\n", Version)
+			os.Exit(0)
+		}
 		return checkRequirements()
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		main(args)
 	},
-	Args:    cobra.ExactArgs(1),
+	Args: func(cmd *cobra.Command, args []string) error {
+		// If version flag is set, don't require args
+		if versionFlag, _ := cmd.Flags().GetBool("version"); versionFlag {
+			return nil
+		}
+		return cobra.ExactArgs(1)(cmd, args)
+	},
 	Example: "github-org-repos-sync floorpunch",
+}
+
+// versionCmd represents the version command
+var versionCmd = &cobra.Command{
+	Use:   "version",
+	Short: "Print the version number",
+	Long:  "Print the version number of github-org-repos-sync",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Printf("github-org-repos-sync version %s\n", Version)
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -78,9 +103,13 @@ func Execute() {
 }
 
 func init() {
+	rootCmd.AddCommand(versionCmd)
 	rootCmd.Flags().BoolVar(&skipArchived, "skip-archived", false, "Skip archived repos?")
 	rootCmd.Flags().StringVar(&excludeRepoString, "exclude-repos", "", "Exclude repos that contain string")
 	rootCmd.Flags().StringVarP(&destPath, "destination-path", "d", ".", "Destionation path for repos")
 	rootCmd.Flags().StringVar(&includeRepoString, "include-repos", "", "Include only repos that contain string")
 	rootCmd.Flags().IntVarP(&parallelism, "parallelism", "p", 1, "Number of parallel git operations")
+
+	// Add version flag that prints version and exits
+	rootCmd.Flags().BoolP("version", "v", false, "Print version information")
 }

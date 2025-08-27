@@ -22,7 +22,9 @@ jobs:
         go-version-file: 'go.mod'
 
     - name: Build
-      run: go build -v ./...
+      run: |
+        VERSION=$(git describe --tags --always --dirty 2>/dev/null || echo "dev-$(git rev-parse --short HEAD)")
+        go build -v -ldflags "-X github.com/xbglowx/github-org-repos-sync/cmd.Version=$VERSION" ./...
 
     - name: Test
       run: go test -v ./...
