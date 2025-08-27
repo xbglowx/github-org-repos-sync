@@ -34,6 +34,17 @@ Download the latest release for your platform from the [releases page](https://g
    go build .
    ```
 
+   **Optional**: Build with version from git:
+   ```bash
+   VERSION=$(git describe --tags --always --dirty 2>/dev/null || echo "dev-$(git rev-parse --short HEAD)")
+   go build -ldflags "-X github.com/xbglowx/github-org-repos-sync/cmd.Version=$VERSION" .
+   ```
+
+   **Optional**: Build with custom version:
+   ```bash
+   go build -ldflags "-X github.com/xbglowx/github-org-repos-sync/cmd.Version=1.0.0" .
+   ```
+
 ## Prerequisites
 
 ### Authentication
@@ -93,6 +104,16 @@ Download the latest release for your platform from the [releases page](https://g
 #### Show help
 ```bash
 ./github-org-repos-sync --help
+```
+
+#### Check version
+```bash
+# Using version subcommand
+./github-org-repos-sync version
+
+# Using version flag
+./github-org-repos-sync --version
+./github-org-repos-sync -v
 ```
 
 ## How It Works

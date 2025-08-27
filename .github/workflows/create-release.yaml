@@ -40,7 +40,7 @@ jobs:
         go-version-file: 'go.mod'
 
     - name: Build
-      run: GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -v -o github-org-repos-sync-${{ matrix.goos }}-${{ matrix.goarch }}
+      run: GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -v -ldflags "-X github.com/xbglowx/github-org-repos-sync/cmd.Version=${{ needs.release-please.outputs.tag_name }}" -o github-org-repos-sync-${{ matrix.goos }}-${{ matrix.goarch }}
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
