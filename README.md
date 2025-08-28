@@ -29,21 +29,25 @@ Download the latest release for your platform from the [releases page](https://g
    cd github-org-repos-sync
    ```
 
-2. **Build the binary**:
+2. **Build using Makefile**:
    ```bash
-   go build .
+   # Build for current platform
+   make build
+   
+   # Build for all platforms (cross-compilation)
+   make build-all
+   
+   # Run tests
+   make test
+   
+   # Clean build artifacts
+   make clean
+   
+   # Show available targets
+   make help
    ```
 
-   **Optional**: Build with version from git:
-   ```bash
-   VERSION=$(git describe --tags --always --dirty 2>/dev/null || echo "dev-$(git rev-parse --short HEAD)")
-   go build -ldflags "-X github.com/xbglowx/github-org-repos-sync/cmd.Version=$VERSION" .
-   ```
-
-   **Optional**: Build with custom version:
-   ```bash
-   go build -ldflags "-X github.com/xbglowx/github-org-repos-sync/cmd.Version=1.0.0" .
-   ```
+The Makefile automatically handles version detection from git tags/commits and provides convenient targets for building, testing, and cross-compilation.
 
 ## Prerequisites
 
@@ -129,6 +133,27 @@ Download the latest release for your platform from the [releases page](https://g
      - Pulls latest changes with rebase
 4. **Parallel Processing**: Processes multiple repositories concurrently for improved performance
 5. **Error Handling**: Gracefully handles edge cases like empty repositories, missing branches, and permission issues
+
+## Development
+
+### Makefile Targets
+
+The project includes a Makefile with convenient targets for development:
+
+| Target | Description |
+|--------|-------------|
+| `make build` | Build binary for current platform |
+| `make build-all` | Build binaries for all platforms (linux/darwin/windows × amd64/arm64) |
+| `make test` | Run tests with race detection |
+| `make clean` | Clean build artifacts |
+| `make version` | Show version that would be built |
+| `make info` | Show detailed build information |
+| `make help` | Show all available targets |
+
+**Version Handling**: The Makefile automatically detects versions using:
+- Git tags for release builds (e.g., `v1.0.0`)
+- Git commit SHA for development builds (e.g., `a1b2c3d`)
+- `-dirty` suffix when there are uncommitted changes
 
 ## Command Line Options
 
