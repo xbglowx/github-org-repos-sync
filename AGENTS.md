@@ -5,7 +5,7 @@
 This is a Go CLI application that synchronizes GitHub organization repositories to local storage. It provides functionality to clone and update multiple repositories from a GitHub organization in parallel, with options for filtering and customization.
 
 **Repository**: `xbglowx/github-org-repos-sync`  
-**Language**: Go 1.23+  
+**Language**: Go 
 **Primary Framework**: Cobra CLI framework  
 **License**: Apache License 2.0
 
