@@ -1,8 +1,6 @@
 module github.com/xbglowx/github-org-repos-sync
 
-go 1.23.0
-
-toolchain go1.25.0
+go 1.25.0
 
 require (
 	github.com/spf13/cobra v1.9.1
