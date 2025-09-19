@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1](https://github.com/xbglowx/github-org-repos-sync/compare/v0.1.0...v0.1.1) (2025-09-19)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/spf13/cobra to v1.10.1 ([be2137c](https://github.com/xbglowx/github-org-repos-sync/commit/be2137c5a3572014dc8d544f8e0f9223b5f7037f))
+* **deps:** update module golang.org/x/oauth2 to v0.31.0 ([f23d7b6](https://github.com/xbglowx/github-org-repos-sync/commit/f23d7b66be477ff37f2c5771077ca88ec9c208a3))
+
 ## [0.1.0](https://github.com/xbglowx/github-org-repos-sync/compare/v0.0.8...v0.1.0) (2025-08-27)
 
 
