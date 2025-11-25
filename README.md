@@ -160,7 +160,7 @@ The project includes a Makefile with convenient targets for development:
 | Flag | Description | Default |
 |------|-------------|---------|
 | `-d, --dest` | Destination directory for repositories | Required |
-| `-p, --parallelism` | Number of concurrent operations | 10 |
+| `-p, --parallelism` | Number of concurrent operations | 1 |
 | `--skip-archived` | Skip archived repositories | false |
 | `--include` | Include only repositories containing this string | "" |
 | `--exclude` | Exclude repositories containing this string | "" |
