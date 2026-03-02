@@ -17,6 +17,11 @@ A command-line tool to efficiently sync all repositories from a GitHub organizat
 
 ## Installation
 
+### Homebrew
+```bash
+brew install xbglowx/tap/github-org-repos-sync
+```
+
 ### Download Pre-built Binaries
 
 Download the latest release for your platform from the [releases page](https://github.com/xbglowx/github-org-repos-sync/releases).
