@@ -77,3 +77,19 @@ jobs:
           ./tmp/github-org-repos-sync-*
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  update-homebrew:
+    needs: [release-please, release-assets]
+    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Update Homebrew formula
+      uses: mislav/bump-homebrew-formula-action@v3
+      with:
+        formula-name: github-org-repos-sync
+        homebrew-tap: xbglowx/homebrew-tap
+        tag-name: ${{ needs.release-please.outputs.tag_name }}
+        commit-message: |
+          chore: update {{formulaName}} to {{version}}
+      env:
+        COMMITTER_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
