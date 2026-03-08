@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/xbglowx/github-org-repos-sync/compare/v0.1.5...v0.1.6) (2026-03-08)
+
+
+### Bug Fixes
+
+* **deps:** update module golang.org/x/oauth2 to v0.36.0 ([a42ead3](https://github.com/xbglowx/github-org-repos-sync/commit/a42ead3305da8aabfea33905e33487216fedd7a0))
+
 ## [0.1.5](https://github.com/xbglowx/github-org-repos-sync/compare/v0.1.4...v0.1.5) (2026-02-08)
 
 
